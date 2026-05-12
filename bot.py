@@ -245,7 +245,7 @@ async def my_bookings(callback: CallbackQuery):
         )
         return
 
-    text = "📅 <b>Ваші записи</b>
+    text = "📅 <b>Ваші записи</b>\\n\\n"
 
 "
 
