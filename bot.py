@@ -212,17 +212,12 @@ async def start(message: Message):
     await bot.send_photo(
         chat_id=message.chat.id,
         photo="https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=1200",
-        caption=(
-            "✨ <b>Онлайн запис на тренування</b>
-
-"
-            "🤍 Персональні тренування
-"
-            "🧘 Stretching • Wellness • Fitness
-
-"
-            "Оберіть потрібну дію нижче ✨"
-        ),
+caption=(
+    "✨ <b>Онлайн запис на тренування</b>\\n\\n"
+    "🤍 Персональні тренування\\n"
+    "🧘 Stretching • Wellness • Fitness\\n\\n"
+    "Оберіть потрібну дію нижче ✨"
+),
         reply_markup=keyboard,
         parse_mode="HTML"
     )
