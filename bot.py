@@ -294,7 +294,7 @@ keyboard = InlineKeyboardMarkup(
 
     await message.answer(
         "🏋️‍♀️ <b>FITNESS TRAINER BOOKING</b>\n\n"
-        "✨ Оберіть дату тренування тренировки:",
+        "✨ Оберіть дату тренування:",
         reply_markup=create_dates_keyboard()
     )
 
@@ -313,7 +313,7 @@ async def select_date(callback: CallbackQuery):
 
     await callback.message.edit_text(
         f"🏋️ <b>{date_str}</b>\n\n"
-        f"Выберите время тренировки:",
+        f"Оберіть час тренування:",
         reply_markup=create_slots_keyboard(date_str)
     )
 
@@ -324,7 +324,7 @@ async def booking(callback: CallbackQuery, state: FSMContext):
 
     if is_past_slot(date_str, slot):
         await callback.answer(
-            "Это время уже прошло",
+            "Цей час вже пройшов",
             show_alert=True
         )
         return
@@ -337,12 +337,12 @@ async def booking(callback: CallbackQuery, state: FSMContext):
     await state.set_state(BookingState.waiting_comment)
 
     await callback.message.edit_text(
-        f"✍️ Напишите комментарий к записи\n\n"
+        f"✍️ Напишіть коментар, побажання до запису\n\n"
         f"Например:\n"
-        f"• Хочу тренировку на ноги\n"
-        f"• Первый раз в зале\n"
-        f"• Нужна растяжка\n\n"
-        f"Или отправьте '-' без комментария"
+        f"• Хочу тренування на ноги\n"
+        f"• Перший раз у залі\n"
+        f"• Групове заняття\n\n"
+        f"Або відправте '-' немає побажань"
     )
 
 
@@ -401,11 +401,11 @@ async def save_booking(message: Message, state: FSMContext):
     booking_id = cursor.lastrowid
 
     await message.answer(
-        f"✅ <b>Тренировка забронирована</b>\n\n"
+        f"✅ <b>Тренування заброньоване</b>\n\n"
         f"📅 {date_str}\n"
         f"⏰ {slot}\n"
         f"💬 {comment}\n\n"
-        f"Отмена:\n/cancel_{booking_id}"
+        f"Скасування:\n/cancel_{booking_id}"
     )
 
     for admin_id in ADMIN_IDS:
