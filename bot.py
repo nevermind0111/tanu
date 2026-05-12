@@ -37,9 +37,7 @@ WORK_START = 10
 WORK_END = 21
 DAYS_AHEAD = 7
 
-logging.basicConfig(level=logging.INFO,
-        reply_markup=keyboard
-    )
+logging.basicConfig(level=logging.INFO)
 
 bot = Bot(
     token=TOKEN,
@@ -181,6 +179,7 @@ def create_slots_keyboard(date_str):
 
 
 
+
 @router.message(Command("start"))
 async def start(message: Message):
 
@@ -188,7 +187,7 @@ async def start(message: Message):
         inline_keyboard=[
             [
                 InlineKeyboardButton(
-                    text="✨ Записатися",
+                    text="✨ Відкрити запис",
                     web_app=WebAppInfo(
                         url=WEBAPP_URL
                     )
@@ -199,12 +198,6 @@ async def start(message: Message):
                     text="📅 Мої записи",
                     callback_data="my_bookings"
                 )
-            ],
-            [
-                InlineKeyboardButton(
-                    text="💬 Підтримка",
-                    url="https://t.me/"
-                )
             ]
         ]
     )
@@ -212,28 +205,32 @@ async def start(message: Message):
     await bot.send_photo(
         chat_id=message.chat.id,
         photo="https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=1200",
-caption=(
-    "✨ <b>Онлайн запис на тренування</b>\\n\\n"
-    "🤍 Персональні тренування\\n"
-    "🧘 Stretching • Wellness • Fitness\\n\\n"
-    "Оберіть потрібну дію нижче ✨"
-),
+        caption=(
+            "✨ <b>Онлайн запис на тренування</b>
+
+"
+            "🤍 Персональні тренування
+"
+            "🧘 Stretching • Wellness • Fitness
+
+"
+            "Оберіть потрібну дію нижче ✨"
+        ),
         reply_markup=keyboard,
         parse_mode="HTML"
     )
-
 
 
 @router.callback_query(F.data == "my_bookings")
 async def my_bookings(callback: CallbackQuery):
 
     cursor.execute(
-        '''
+        """
         SELECT booking_date, booking_time
         FROM bookings
         WHERE user_id = ?
         ORDER BY booking_date, booking_time
-        ''',
+        """,
         (callback.from_user.id,)
     )
 
@@ -245,64 +242,18 @@ async def my_bookings(callback: CallbackQuery):
         )
         return
 
-text = "📅 <b>Ваші записи</b>\\n\\n"
+    text = "📅 <b>Ваші записи</b>
 
-for row in rows:
-    text += (
-        f"✨ {row[0]} • {row[1]}\\n"
-    )
+"
+
+    for row in rows:
+        text += f"✨ {row[0]} • {row[1]}
+"
 
     await callback.message.answer(
         text,
         parse_mode="HTML"
     )
-
-@router.message(Command("start"))
-async def start(message: Message):
-
-    keyboard = InlineKeyboardMarkup(
-        inline_keyboard=[
-            [
-                InlineKeyboardButton(
-                    text="✨ Відкрити запис",
-                    web_app=WebAppInfo(
-                        url="https://fitness-miniapp.onrender.com/"
-                    )
-                )
-            ]
-        ]
-    )
-
-    await message.answer(
-        "✨ Оберіть формат запису",
-        reply_markup=keyboard
-    )
-    
-@router.message(Command("start"))
-async def start(message: Message):
-
-    keyboard = InlineKeyboardMarkup(
-        inline_keyboard=[
-            [
-                InlineKeyboardButton(
-                    text="✨ Відкрити запис",
-                    web_app=WebAppInfo(
-                        url=WEBAPP_URL
-                    )
-                )
-            ]
-        ]
-    )
-
-    await message.answer(
-        "✨ <b>Онлайн запис на тренування</b>\\n\\n"
-        "🤍 Персональні тренування\\n"
-        "🧘 Stretching • Wellness • Fitness\\n\\n"
-        "Оберіть потрібну дію нижче ✨",
-        reply_markup=keyboard,
-        parse_mode="HTML"
-    )
-
 
 @router.callback_query(F.data.startswith("date|"))
 async def select_date(callback: CallbackQuery):
