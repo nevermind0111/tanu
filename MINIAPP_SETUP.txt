@@ -1,0 +1,14 @@
+
+MINI APP CONNECTED
+
+URL:
+https://fitness-miniapp.onrender.com/
+
+BOTFATHER:
+1. /mybots
+2. Bot Settings
+3. Menu Button
+4. Set URL:
+https://fitness-miniapp.onrender.com/
+
+After this your existing bot will open the Mini App directly inside Telegram.
