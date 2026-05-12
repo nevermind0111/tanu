@@ -278,32 +278,29 @@ async def start(message: Message):
         reply_markup=keyboard
     )
     
-keyboard = InlineKeyboardMarkup(
-    inline_keyboard=[
-        [
-            InlineKeyboardButton(
-                text="✨ Відкрити запис",
-                web_app=WebAppInfo(
-                    url=WEBAPP_URL
+@router.message(Command("start"))
+async def start(message: Message):
+
+    keyboard = InlineKeyboardMarkup(
+        inline_keyboard=[
+            [
+                InlineKeyboardButton(
+                    text="✨ Відкрити запис",
+                    web_app=WebAppInfo(
+                        url=WEBAPP_URL
+                    )
                 )
-            )
+            ]
         ]
-    ]
-)
-
-
-    await message.answer(
-        "🏋️‍♀️ <b>FITNESS TRAINER BOOKING</b>\n\n"
-        "✨ Оберіть дату тренування:",
-        reply_markup=create_dates_keyboard()
     )
 
-
-@router.callback_query(F.data == "back_dates")
-async def back_dates(callback: CallbackQuery):
-    await callback.message.edit_text(
-        "📅 ✨ Оберіть дату тренування:",
-        reply_markup=create_dates_keyboard()
+    await message.answer(
+        "✨ <b>Онлайн запис на тренування</b>\\n\\n"
+        "🤍 Персональні тренування\\n"
+        "🧘 Stretching • Wellness • Fitness\\n\\n"
+        "Оберіть потрібну дію нижче ✨",
+        reply_markup=keyboard,
+        parse_mode="HTML"
     )
 
 
@@ -369,7 +366,7 @@ async def save_booking(message: Message, state: FSMContext):
     )
 
     if cursor.fetchone():
-        await message.answer("❌ Это время уже занято")
+        await message.answer("❌ Цей час вже зайнято")
         await state.clear()
         return
 
