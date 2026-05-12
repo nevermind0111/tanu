@@ -245,15 +245,12 @@ async def my_bookings(callback: CallbackQuery):
         )
         return
 
-    text = "📅 <b>Ваші записи</b>\\n\\n"
+text = "📅 <b>Ваші записи</b>\\n\\n"
 
-"
-
-    for row in rows:
-        text += (
-            f"✨ {row[0]} • {row[1]}
-"
-        )
+for row in rows:
+    text += (
+        f"✨ {row[0]} • {row[1]}\\n"
+    )
 
     await callback.message.answer(
         text,
